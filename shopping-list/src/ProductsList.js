@@ -1,26 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cart from './cart.svg';
+import './ProductsList.css';
+import bag from './bag.svg';
 
-class ProductsList extends React.Component {
-    render() {
-        return (
-            <div className="ProductsList">
-                <img src={cart} className="Cart-logo" alt="cart" />
-            </div>
-        )
-    }
-}
 
-class FilterProductsList extends React.Component {
-    render() {
-        return (
-            <div>
-                <ProductsList list={items} />
-            </div>
-        )
-    }
-}
 
 const items = [
     {name: "coca", price: 1.70},
@@ -52,8 +35,57 @@ const items = [
     {name: "mangue", price: 3.99}
 ] ;
 
+class Product extends  React.Component {
+    render() {
+        const item = this.props.item ;
+        let productClass = 'Product ';
+        productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
+        return (
+            <div className={productClass}>
+                <div className="Info textLeft">{item.name}</div>
+                <div className="Info textRight">{item.price} €</div>
+                <button className="BtnAdd">
+                    <img src={bag} alt="Ajouter au panier" />
+                </button>
+            </div>
+        )
+    }
+}
+
+class ProductsList extends React.Component {
+    render() {
+        const rows = [] ;
+        let i = 0 ;
+        items.forEach((product) => {
+            i = i === 0 ? 1 : 0;
+            rows.push(
+                <Product
+                    item={product}
+                    key={product.name}
+                    boxBg={i}
+                />
+            )
+        });
+        return (
+            <section className="ProductsList">
+                {rows}
+            </section>
+        )
+    }
+}
+
+class FilterProductsList extends React.Component {
+    render() {
+        return (
+            <div>
+                <ProductsList />
+            </div>
+        )
+    }
+}
+
 ReactDOM.render(
-    <FilterProductsList list={items} />,
+    <FilterProductsList />,
     document.getElementById('root')
 );
 
