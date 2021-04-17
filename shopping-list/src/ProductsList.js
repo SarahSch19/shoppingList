@@ -2,12 +2,44 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import cart from './cart.svg';
 
+class Product extends  React.Component {
+    render() {
+        const item = this.props.item ;
+        //const name = item.name ;
+        //const price = item.price;
+
+        return (
+            <tr>
+                <td>{item.name}</td>
+                <td>{item.price}</td>
+            </tr>
+        )
+    }
+}
+
 class ProductsList extends React.Component {
     render() {
+        const rows = [] ;
+        this.props.list.forEach((product) => {
+            rows.push(
+                <Product
+                    item={product}
+                    key={product.name}
+                />
+            )
+        });
         return (
-            <div className="ProductsList">
-                <img src={cart} className="Cart-logo" alt="cart" />
-            </div>
+            <section className="ProductsList">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                </table>
+            </section>
         )
     }
 }
@@ -16,7 +48,7 @@ class FilterProductsList extends React.Component {
     render() {
         return (
             <div>
-                <ProductsList list={items} />
+                <ProductsList list={this.props.list} />
             </div>
         )
     }
@@ -53,7 +85,7 @@ const items = [
 ] ;
 
 ReactDOM.render(
-    <FilterProductsList list={items} />,
+    <FilterProductsList list={items}/>,
     document.getElementById('root')
 );
 
