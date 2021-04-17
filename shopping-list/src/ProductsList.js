@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import './ProductsList.css';
 import bag from './bag.svg';
 
-
-
 const items = [
     {name: "coca", price: 1.70},
     {name: "orangina", price: 2.33},
