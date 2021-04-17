@@ -1,58 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './ProductsList.css';
 import cart from './cart.svg';
 
-class Product extends  React.Component {
-    render() {
-        const item = this.props.item ;
-        //const name = item.name ;
-        //const price = item.price;
 
-        return (
-            <tr>
-                <td>{item.name}</td>
-                <td>{item.price}</td>
-            </tr>
-        )
-    }
-}
-
-class ProductsList extends React.Component {
-    render() {
-        const rows = [] ;
-        this.props.list.forEach((product) => {
-            rows.push(
-                <Product
-                    item={product}
-                    key={product.name}
-                />
-            )
-        });
-        return (
-            <section className="ProductsList">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
-                </table>
-            </section>
-        )
-    }
-}
-
-class FilterProductsList extends React.Component {
-    render() {
-        return (
-            <div>
-                <ProductsList list={this.props.list} />
-            </div>
-        )
-    }
-}
 
 const items = [
     {name: "coca", price: 1.70},
@@ -84,8 +35,54 @@ const items = [
     {name: "mangue", price: 3.99}
 ] ;
 
+class Product extends  React.Component {
+    render() {
+        const item = this.props.item ;
+        //const productClass = 'ProductInfos ' + this.props.boxBg == 0 ? 'bgLight' : 'bgDark' ;
+        return (
+            <div className="Product">
+                <div className="Info">{item.name}</div>
+                <div className="Info">{item.price} €</div>
+                <button className="BtnAdd">Ajouter au panier</button>
+            </div>
+        )
+    }
+}
+
+class ProductsList extends React.Component {
+    render() {
+        const rows = [] ;
+        let i = 0 ;
+        items.forEach((product) => {
+            i = i == 0 ? 1 : 0;
+            rows.push(
+                <Product
+                    item={product}
+                    key={product.name}
+                    boxBg={i}
+                />
+            )
+        });
+        return (
+            <section className="ProductsList">
+                {rows}
+            </section>
+        )
+    }
+}
+
+class FilterProductsList extends React.Component {
+    render() {
+        return (
+            <div>
+                <ProductsList />
+            </div>
+        )
+    }
+}
+
 ReactDOM.render(
-    <FilterProductsList list={items}/>,
+    <FilterProductsList />,
     document.getElementById('root')
 );
 
