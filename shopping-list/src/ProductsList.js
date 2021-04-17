@@ -38,11 +38,18 @@ class Product extends  React.Component {
         const item = this.props.item ;
         let productClass = 'Product ';
         productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
+        let options = [];
+        for (let i = 1 ; i <= 10 ; ++i) {
+            options.push(<option>{i}</option>)
+        }
         return (
             <div className={productClass}>
                 <div className="Info textLeft">{item.name}</div>
                 <div className="Info textRight">{item.price} €</div>
                 <button className="BtnAdd">
+                    <select id={item.name}>
+                        {options}
+                    </select>
                     <img src={bag} alt="Ajouter au panier" />
                 </button>
             </div>
