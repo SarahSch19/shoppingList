@@ -15,6 +15,7 @@
     display: inline-block;
     padding: 1em;
     min-width: 15%;
+    max-width: 27%;
     text-align: center;
 }
 
@@ -22,7 +23,7 @@
     margin: 1vh;
     margin-bottom: 3vh;
     padding: 0.1em;
-    border-bottom: black 1px solid;
+    #border-bottom: black 1px solid;
     border-radius: 10px;
 
     width: 100%;
@@ -30,21 +31,58 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
+    align-items: center;
 }
 
 .BtnAdd {
     font-family: Palatino;
-    width: 30%;
-    height: 40%;
+    width: 20%;
     display: inline-block;
     text-align: center;
     padding: 1em;
+    border: none;
+    background-color: unset;
+}
+
+.BtnAdd > img {
+    height: 5vh;
+}
+
+@media (max-width: 650px) {
+    .ProductsList {
+        width: 95vw;
+    }
+
+    .BtnAdd {
+        border-radius: 10px;
+    }
+}
+
+@media screen {
+    .BtnAdd {
+        width: 30%;
+        font-size: 0.9em;
+    }
 }
 
 .bgLight {
-    background: darkgray;
+    background-color: rgba(200,200,206,0.3);
+    color: dimgrey;
 }
 
 .bgDark {
-    background: teal;
+    background-color: rgba(56,82,206,0.6);
+    color: rgba(56,82,206,1);
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.textCenter {
+    text-align: center;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './ProductsList.css';
-import cart from './cart.svg';
+import bag from './bag.svg';
 
 
 
@@ -38,12 +38,15 @@ const items = [
 class Product extends  React.Component {
     render() {
         const item = this.props.item ;
-        //const productClass = 'ProductInfos ' + this.props.boxBg == 0 ? 'bgLight' : 'bgDark' ;
+        let productClass = 'Product ';
+        productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
         return (
-            <div className="Product">
-                <div className="Info">{item.name}</div>
-                <div className="Info">{item.price} €</div>
-                <button className="BtnAdd">Ajouter au panier</button>
+            <div className={productClass}>
+                <div className="Info textLeft">{item.name}</div>
+                <div className="Info textRight">{item.price} €</div>
+                <button className="BtnAdd">
+                    <img src={bag} alt="Ajouter au panier" />
+                </button>
             </div>
         )
     }
@@ -54,7 +57,7 @@ class ProductsList extends React.Component {
         const rows = [] ;
         let i = 0 ;
         items.forEach((product) => {
-            i = i == 0 ? 1 : 0;
+            i = i === 0 ? 1 : 0;
             rows.push(
                 <Product
                     item={product}
