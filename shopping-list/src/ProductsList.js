@@ -58,8 +58,7 @@ function addToCart (itemName) {
             }
         })
     }
-    const cart = new Cart();
-    cart.state = {};
+    updateCart();
 }
 
 function removeFromCart (itemName) {
@@ -67,14 +66,14 @@ function removeFromCart (itemName) {
         if (cartItems[i].name === itemName)
             cartItems.splice(i, 1);
     }
+    updateCart();
 }
 
-function computeTotalCart () {
-    let total = 0.0;
-    cartItems.forEach(item => {
-        total += item.unitPrice * item.quantity;
-    })
-    return total;
+function updateCart () {
+    ReactDOM.render(
+        <Cart />,
+        document.getElementById('CartContainer')
+    )
 }
 
 class Product extends  React.Component {
@@ -157,9 +156,17 @@ class CartProduct extends React.Component {
 }
 
 class CartTotal extends React.Component {
+    computeTotalCart () {
+        let total = 0.0;
+        cartItems.forEach(item => {
+            total += item.unitPrice * item.quantity;
+        })
+        return total;
+    }
+
     render() {
         return (
-            this.props.rowsLength === 0 ? "" : <h3>Total {computeTotalCart().toFixed(2)} €</h3>
+            this.props.rowsLength === 0 ? "" : <h3>Total {this.computeTotalCart().toFixed(2)} €</h3>
         )
     }
 }
@@ -206,7 +213,9 @@ class Main extends React.Component {
     render() {
         return (
             <main>
-                <Cart />
+                <div id={"CartContainer"}>
+                    <Cart />
+                </div>
                 <FilteredProductsList />
             </main>
         )
