@@ -64,7 +64,10 @@ function addToCart (itemName) {
 }
 
 function removeFromCart (itemName) {
-    console.log(itemName);
+    for (let i = 0 ; i < cartItems.length ; ++i) {
+        if (cartItems[i].name === itemName)
+            cartItems.splice(i, 1);
+    }
 }
 
 function computeTotalCart () {
