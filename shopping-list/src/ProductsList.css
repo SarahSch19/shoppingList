@@ -48,6 +48,13 @@
     height: 5vh;
 }
 
+select {
+    border: unset;
+    border-radius: 10px;
+    margin: auto;
+    margin: 1em;
+}
+
 @media (max-width: 650px) {
     .ProductsList {
         width: 95vw;
@@ -63,26 +70,4 @@
         width: 30%;
         font-size: 0.9em;
     }
-}
-
-.bgLight {
-    background-color: rgba(200,200,206,0.3);
-    color: dimgrey;
-}
-
-.bgDark {
-    background-color: rgba(56,82,206,0.6);
-    color: rgba(56,82,206,1);
-}
-
-.textLeft {
-    text-align: left;
-}
-
-.textRight {
-    text-align: right;
-}
-
-.textCenter {
-    text-align: center;
 }

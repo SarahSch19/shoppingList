@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Poppins';
+    src:	url('./fonts/Poppins-Regular.ttf') format('ttf')
+}
+
+.Cart {
+    display: block;
+    text-align: left;
+    padding: 2vw;
+}
+
+@media (min-width: 650px) {
+    .Cart {
+        width: 30vw;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+    }
+}
+
+.CartItem {
+    border-bottom: solid 1px silver;
+    padding: 1em;
+    margin: 1em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.ItemsPrice {
+    display: inline-block;
+    font-weight: bold;
+    height: 100%;
+    font-size: x-large;
+}
+
+.Item {
+    text-align: right;
+    min-width: 120px;
+}
+
+.UnitPrice {
+    font-size: small;
+    color: grey;
+}
+
+#Refresh {
+    width: 5vh;
+    position: absolute;
+    right: 2em;
+    top: 2em;
+}
+
+.Cross {
+    height: 3vh;
+}
