@@ -34,13 +34,22 @@ const items = [
     {name: "mangue", price: 3.99}
 ] ;
 
-const cartItems = [
-    {name: "coca", price: 1.70, quantity: 2}
-] ;
+const cartItems = [] ;
 
 function addToCart (itemName) {
     const nb = document.getElementById('select-' + itemName).value ;
-    console.log(nb, itemName, cartItems);
+    if (cartItems.indexOf(itemName) !== -1) {
+        cartItems[itemName].quantity += nb;
+    } else {
+        let unitPrice = 0.0;
+        items.forEach(i => {
+            if (i.name === itemName)
+                unitPrice = i.price;
+        })
+        const item = {quantity: nb, unitPrice: unitPrice};
+        cartItems[itemName] = item;
+        console.log(cartItems);
+    }
 }
 
 class Product extends  React.Component {
