@@ -105,9 +105,9 @@ class Product extends  React.Component {
 }
 
 class ProductsList extends React.Component {
-    render() {
-        const rows = [] ;
+    pushRows() {
         let i = 0 ;
+        const rows = [] ;
         items.forEach(product => {
             i = i === 0 ? 1 : 0;
             rows.push(
@@ -118,6 +118,11 @@ class ProductsList extends React.Component {
                 />
             )
         });
+        return rows ;
+    }
+
+    render() {
+        const rows = this.pushRows() ;
         return (
             <div className="ProductsList">
                 {rows}
