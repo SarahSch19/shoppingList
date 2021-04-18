@@ -1,0 +1,18 @@
+.FilterBar {
+    display: block;
+    text-align: center;
+    padding: 1vw;
+    width: 60vw;
+}
+
+#FilterButton {
+    width: 22%;
+    padding: 1em;
+    margin: auto;
+}
+
+#FilterInput {
+    width: 75%;
+    padding: 1em;
+    margin-left: 1em;
+}
