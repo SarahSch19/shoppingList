@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './ProductsList.css';
 import './Cart.css';
@@ -40,7 +40,6 @@ const items = [
 const cartItems = [] ;
 //cartItems.push({name:'test', quantity: 3, unitPrice: 1.7});
 //cartItems.push({name:'hello', quantity: 2, unitPrice: 3.99});
-
 
 function addToCart (itemName) {
     const nb = parseInt(document.getElementById('select-' + itemName).value) ;
@@ -157,14 +156,25 @@ class CartProduct extends React.Component {
     }
 }
 
+class CartTotal extends React.Component {
+    render() {
+        return (
+            this.props.rowsLength === 0 ? "" : <h3>Total {computeTotalCart().toFixed(2)} €</h3>
+        )
+    }
+}
+
 class Cart extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {};
     }
 
-    render() {
-        console.log(cartItems);
+    refresh() {
+        this.setState({}) ;
+    }
+
+    pushRows() {
         const rows = [] ;
         cartItems.forEach(product => {
             rows.push(
@@ -174,25 +184,38 @@ class Cart extends React.Component {
                 />
             )
         });
+        return rows;
+    }
+
+    render() {
+        const rows = this.pushRows();
         return (
             <section className="Cart">
                 <h2>Mon panier</h2>
                 <img id={"Refresh"} src={refresh} alt="refresh" onClick={() => {
-                    this.setState({});
+                    this.refresh()
                 }} />
                 {rows}
-                <h3>Total {computeTotalCart() + ' €'}</h3>
+                <CartTotal rowsLength = {rows.length} />
             </section>
         )
     }
 }
 
+class Main extends React.Component {
+    render() {
+        return (
+            <main>
+                <Cart />
+                <FilteredProductsList />
+            </main>
+        )
+    }
+}
+
 ReactDOM.render(
-    <main>
-        <Cart />
-        <FilteredProductsList />
-    </main>,
+    <Main />,
     document.getElementById('root')
 );
 
-export default ProductsList;
+export default Main;
