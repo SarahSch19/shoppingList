@@ -30,6 +30,7 @@ class Cart extends React.Component {
         return (
             <section className="Cart">
                 {rows}
+                <script src="addToCart.js"></script>
             </section>
         )
     }

@@ -33,25 +33,34 @@ const items = [
     {name: "mangue", price: 3.99}
 ] ;
 
+function addToCart (itemName) {
+    const nb = document.getElementById('select-' + itemName).value ;
+    console.log(nb, itemName, cartItems);
+}
+
 class Product extends  React.Component {
     render() {
         const item = this.props.item ;
         let productClass = 'Product ';
         productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
         let options = [];
-        for (let i = 1 ; i <= 10 ; ++i) {
+        for (let i = 1 ; i <= 25 ; ++i) {
             options.push(<option>{i}</option>)
         }
         return (
             <div className={productClass}>
                 <div className="Info textLeft">{item.name}</div>
                 <div className="Info textRight">{item.price} €</div>
-                <button className="BtnAdd">
-                    <select id={item.name}>
+                <div className="Info">
+                    <select id={"select-" + item.name}>
                         {options}
                     </select>
-                    <img src={bag} alt="Ajouter au panier" />
-                </button>
+                    <button className="BtnAdd" onClick={() => {
+                        addToCart(item.name)
+                    }}>
+                        <img src={bag} alt="Ajouter au panier"/>
+                    </button>
+                </div>
             </div>
         )
     }
@@ -61,7 +70,7 @@ class ProductsList extends React.Component {
     render() {
         const rows = [] ;
         let i = 0 ;
-        items.forEach((product) => {
+        items.forEach(product => {
             i = i === 0 ? 1 : 0;
             rows.push(
                 <Product
@@ -90,7 +99,9 @@ class FilterProductsList extends React.Component {
 }
 
 ReactDOM.render(
-    <FilterProductsList />,
+    <main>
+        <FilterProductsList />
+    </main>,
     document.getElementById('root')
 );
 
