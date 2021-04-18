@@ -5,26 +5,53 @@
 
 .Cart {
     display: block;
-    text-align: right;
-    padding: 1vw;
+    text-align: left;
+    padding: 2vw;
 }
 
 @media (min-width: 650px) {
     .Cart {
-        width: 35vw;
-        position: absolute;
+        width: 30vw;
+        position: fixed;
         top: 0px;
         right: 0px;
     }
 }
 
 .CartItem {
-    border: solid 1px black;
-    border-radius: 8px;
+    border-bottom: solid 1px silver;
     padding: 1em;
     margin: 1em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.ItemsPrice {
+    display: inline-block;
+    font-weight: bold;
+    height: 100%;
+    font-size: x-large;
+}
+
+.Item {
+    text-align: right;
+    min-width: 120px;
+}
+
+.UnitPrice {
+    font-size: small;
+    color: grey;
 }
 
 #Refresh {
     width: 5vh;
+    position: absolute;
+    right: 2em;
+    top: 2em;
+}
+
+.Cross {
+    height: 3vh;
 }
