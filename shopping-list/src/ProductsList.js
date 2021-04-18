@@ -2,8 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './ProductsList.css';
 import './Cart.css';
+import './general.css'
 import bag from './bag.svg';
 import refresh from './refresh.svg';
+import cross from './cross.svg';
 
 const items = [
     {name: "coca", price: 1.70},
@@ -61,7 +63,17 @@ function addToCart (itemName) {
     cart.state = {};
 }
 
+function removeFromCart (itemName) {
+    console.log(itemName);
+}
 
+function computeTotalCart () {
+    let total = 0.0;
+    cartItems.forEach(item => {
+        total += item.unitPrice * item.quantity;
+    })
+    return total;
+}
 
 class Product extends  React.Component {
     render() {
@@ -117,6 +129,7 @@ class FilteredProductsList extends React.Component {
     render() {
         return (
             <section className="FilteredProductsList">
+                <h2>Articles</h2>
                 <ProductsList />
             </section>
         )
@@ -128,8 +141,14 @@ class CartProduct extends React.Component {
         const item = this.props.item;
         return (
             <div className="CartItem">
-                <div>{item.name} :  {item.quantity * item.unitPrice} €</div>
-                <div>{item.quantity} * {item.unitPrice} €</div>
+                <div className={"Item"}>
+                    <div>{item.quantity} x {item.name}</div>
+                    <div className={"UnitPrice"}>{item.unitPrice + ' €'}</div>
+                </div>
+                <span className={"ItemsPrice Item"}>{item.quantity * item.unitPrice + " €"}</span>
+                <img src={cross} alt={"remove"} className={"Cross Item"} onClick={() => {
+                    removeFromCart(item.name);
+                }} />
             </div>
         )
     }
@@ -154,10 +173,12 @@ class Cart extends React.Component {
         });
         return (
             <section className="Cart">
+                <h2>Mon panier</h2>
                 <img id={"Refresh"} src={refresh} alt="refresh" onClick={() => {
                     this.setState({});
                 }} />
                 {rows}
+                <h3>Total {computeTotalCart() + ' €'}</h3>
             </section>
         )
     }
