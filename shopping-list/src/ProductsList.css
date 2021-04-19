@@ -14,8 +14,7 @@
     font-family: Poppins, Arial;
     display: inline-block;
     padding: 1em;
-    min-width: 15%;
-    max-width: 27%;
+    width: 20%;
     text-align: center;
 }
 

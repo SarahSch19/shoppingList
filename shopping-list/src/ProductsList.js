@@ -4,6 +4,7 @@ import './general.css';
 import './ProductsList.css';
 import './Cart.css';
 import './FilterBar.css';
+import './Nav.css';
 import bag from './bag.svg';
 import refresh from './refresh.svg';
 import cross from './cross.svg';
@@ -139,7 +140,7 @@ class ProductsList extends FilteredProductsList {
         return (
             <div className="ProductsList">
                 {this.pushRows()}
-                <PageButtons page={currentPage + 1} maxPage={maxPage}/>
+                <NavButtons page={currentPage + 1} maxPage={maxPage}/>
             </div>
         )
     }
@@ -180,7 +181,7 @@ class Product extends ProductsList {
     }
 }
 
-class PageButtons extends ProductsList {
+class NavButtons extends ProductsList {
 
     prevPage() {
         currentPage = currentPage - 1 < 0 ? 0 : currentPage - 1;
@@ -223,7 +224,7 @@ class PageButtons extends ProductsList {
     }
     render() {
         return (
-            <div className={"PageButtons"}>
+            <div className={"NavButtons"}>
                 {this.buttonsList()}
             </div>
         )
