@@ -44,6 +44,10 @@
     background-color: unset;
 }
 
+.BtnAdd:focus {
+    outline: none;
+}
+
 .BtnAdd > img {
     height: 5vh;
 }

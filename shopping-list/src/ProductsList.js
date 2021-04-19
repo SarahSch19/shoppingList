@@ -107,15 +107,15 @@ class FilteredProductsList extends React.Component {
 
 class ProductsList extends FilteredProductsList {
     pushRows() {
-        let i = 0 ;
+        let bg = 'bgLight' ;
         const rows = [] ;
         items.forEach(product => {
-            i = i === 0 ? 1 : 0;
+            bg = bg === 'bgDark' ? 'bgLight' : 'bgDark';
             rows.push(
                 <Product
                     item={product}
                     key={product.name}
-                    boxBg={i}
+                    boxBg={bg}
                 />
             )
         });
@@ -142,10 +142,9 @@ class Product extends ProductsList {
 
     render() {
         const item = this.props.item ;
-        let productClass = 'Product ';
-        productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
+        if (filter === "" || item.name.indexOf(filter) !== -1) {
+            let productClass = 'Product ' + this.props.boxBg;
 
-        if (filter === "" || item.name.indexOf(filter) !== -1)
             return (
                 <div className={productClass}>
                     <div className="Info textLeft">{item.name}</div>
@@ -162,7 +161,7 @@ class Product extends ProductsList {
                     </div>
                 </div>
             )
-        else
+        } else
             return ("");
     }
 }
