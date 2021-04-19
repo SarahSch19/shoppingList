@@ -7,9 +7,10 @@
     display: block;
     text-align: left;
     padding: 2vw;
+    min-width: 300px;
 }
 
-@media (min-width: 650px) {
+@media (min-width: 801px) {
     .Cart {
         width: 30vw;
         position: fixed;

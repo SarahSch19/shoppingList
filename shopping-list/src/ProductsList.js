@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './ProductsList.css';
 import './Cart.css';
-import './general.css'
+import './FilterBar.css';
+import './general.css';
 import bag from './bag.svg';
 import refresh from './refresh.svg';
 import cross from './cross.svg';
@@ -38,8 +39,8 @@ const items = [
 ] ;
 
 const cartItems = [] ;
-//cartItems.push({name:'test', quantity: 3, unitPrice: 1.7});
-//cartItems.push({name:'hello', quantity: 2, unitPrice: 3.99});
+
+let filter = "";
 
 function addToCart (itemName) {
     const nb = parseInt(document.getElementById('select-' + itemName).value) ;
@@ -76,97 +77,104 @@ function updateCart () {
     )
 }
 
-class Product extends  React.Component {
-    render() {
-        const item = this.props.item ;
-        let productClass = 'Product ';
-        productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
-        let options = [];
-        for (let i = 1 ; i <= 25 ; ++i) {
-            options.push(<option key={item.name + i}>{i}</option>)
-        }
-        return (
-            <div className={productClass}>
-                <div className="Info textLeft">{item.name}</div>
-                <div className="Info textRight">{item.price} €</div>
-                <div className="Info">
-                    <select id={"select-" + item.name}>
-                        {options}
-                    </select>
-                    <button className="BtnAdd" onClick={() => {
-                        addToCart(item.name)
-                    }}>
-                        <img src={bag} alt="Ajouter au panier"/>
-                    </button>
-                </div>
-            </div>
-        )
-    }
-}
-
-class ProductsList extends React.Component {
-    render() {
-        const rows = [] ;
-        let i = 0 ;
-        items.forEach(product => {
-            i = i === 0 ? 1 : 0;
-            rows.push(
-                <Product
-                    item={product}
-                    key={product.name}
-                    boxBg={i}
-                />
-            )
-        });
-        return (
-            <div className="ProductsList">
-                {rows}
-            </div>
-        )
-    }
-}
 
 class FilteredProductsList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {filter: ""};
+    }
+
+    filter() {
+        filter = document.getElementById('FilterInput').value;
+        ReactDOM.render(
+            <ProductsList filter={filter}/>,
+            document.getElementById('ProductsList')
+        );
+    }
+
     render() {
         return (
             <section className="FilteredProductsList">
                 <h2>Articles</h2>
-                <ProductsList />
+                <FilterBar/>
+                <div id={"ProductsList"}>
+                    <ProductsList />
+                </div>
             </section>
         )
     }
 }
 
-class CartProduct extends React.Component {
+class ProductsList extends FilteredProductsList {
+    pushRows() {
+        let bg = 'bgLight' ;
+        const rows = [] ;
+        items.forEach(product => {
+            bg = bg === 'bgDark' ? 'bgLight' : 'bgDark';
+            rows.push(
+                <Product
+                    item={product}
+                    key={product.name}
+                    boxBg={bg}
+                />
+            )
+        });
+        return rows ;
+    }
+
     render() {
-        const item = this.props.item;
         return (
-            <div className="CartItem">
-                <div className={"Item"}>
-                    <div>{item.quantity} x {item.name}</div>
-                    <div className={"UnitPrice"}>{item.unitPrice + ' €'}</div>
-                </div>
-                <span className={"ItemsPrice Item"}>{item.quantity * item.unitPrice + " €"}</span>
-                <img src={cross} alt={"remove"} className={"Cross Item"} onClick={() => {
-                    removeFromCart(item.name);
-                }} />
+            <div className="ProductsList">
+                {this.pushRows()}
             </div>
         )
     }
 }
 
-class CartTotal extends React.Component {
-    computeTotalCart () {
-        let total = 0.0;
-        cartItems.forEach(item => {
-            total += item.unitPrice * item.quantity;
-        })
-        return total;
+class Product extends ProductsList {
+    setOptions(itemName) {
+        let options = [];
+        for (let i = 1 ; i <= 25 ; ++i) {
+            options.push(<option key={itemName + i}>{i}</option>)
+        }
+        return options;
     }
 
     render() {
+        const item = this.props.item ;
+        if (filter === "" || item.name.indexOf(filter) !== -1) {
+            let productClass = 'Product ' + this.props.boxBg;
+
+            return (
+                <div className={productClass}>
+                    <div className="Info textLeft">{item.name}</div>
+                    <div className="Info textRight">{item.price} €</div>
+                    <select className={"Info"} id={"select-" + item.name}>
+                        {this.setOptions(item.name)}
+                    </select>
+                    <div className="Info">
+                        <button className="BtnAdd" onClick={() => {
+                            addToCart(item.name)
+                        }}>
+                            <img src={bag} alt="Ajouter au panier"/>
+                        </button>
+                    </div>
+                </div>
+            )
+        } else
+            return ("");
+    }
+}
+
+class FilterBar extends FilteredProductsList {
+    render() {
         return (
-            this.props.rowsLength === 0 ? "" : <h3>Total {this.computeTotalCart().toFixed(2)} €</h3>
+            <div className={"FilterBar"}>
+                <input type={"text"} id={"FilterInput"} placeholder={"Nom de l'article"} />
+                <button id={"FilterButton"} onClick={() => {
+                    this.filter();
+                }}>Rechercher</button>
+            </div>
         )
     }
 }
@@ -203,8 +211,42 @@ class Cart extends React.Component {
                     this.refresh()
                 }} />
                 {rows}
-                <CartTotal rowsLength = {rows.length} />
+                <CartTotal rowsLength={rows.length} />
             </section>
+        )
+    }
+}
+
+class CartProduct extends Cart {
+    render() {
+        const item = this.props.item;
+        return (
+            <div className="CartItem">
+                <div className={"Item"}>
+                    <div>{item.quantity} x {item.name}</div>
+                    <div className={"UnitPrice"}>{item.unitPrice.toFixed(2) + ' €'}</div>
+                </div>
+                <span className={"ItemsPrice Item"}>{(item.quantity * item.unitPrice).toFixed(2) + " €"}</span>
+                <img src={cross} alt={"remove"} className={"Cross Item"} onClick={() => {
+                    removeFromCart(item.name);
+                }} />
+            </div>
+        )
+    }
+}
+
+class CartTotal extends Cart {
+    computeTotalCart () {
+        let total = 0.0;
+        cartItems.forEach(item => {
+            total += item.unitPrice * item.quantity;
+        })
+        return total;
+    }
+
+    render() {
+        return (
+            this.props.rowsLength === 0 ? "" : <h3>Total {this.computeTotalCart().toFixed(2)} €</h3>
         )
     }
 }

@@ -27,6 +27,7 @@
     border-radius: 10px;
 
     width: 100%;
+    height: 10vh;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -36,12 +37,15 @@
 
 .BtnAdd {
     font-family: Palatino;
-    width: 20%;
+    height: 5vh;
     display: inline-block;
     text-align: center;
-    padding: 1em;
     border: none;
     background-color: unset;
+}
+
+.BtnAdd:focus {
+    outline: none;
 }
 
 .BtnAdd > img {
@@ -55,19 +59,8 @@ select {
     margin: 1em;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 800px) {
     .ProductsList {
         width: 95vw;
-    }
-
-    .BtnAdd {
-        border-radius: 10px;
-    }
-}
-
-@media screen {
-    .BtnAdd {
-        width: 30%;
-        font-size: 0.9em;
     }
 }
