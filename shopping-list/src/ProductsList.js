@@ -126,6 +126,30 @@ class ProductsList extends FilteredProductsList {
         return (
             <div className="ProductsList">
                 {this.pushRows()}
+                <PageButtons page={2} maxPage={3}/>
+            </div>
+        )
+    }
+}
+
+class PageButtons extends ProductsList {
+    buttonsList() {
+        const buttons = [];
+
+        if (this.props.page !== 1)
+            buttons.push(<button key={"buttonPrevious"} onClick={"previous"}>{"<"}</button>) ;
+
+        buttons.push(<button key={"buttonCurrent"}>{this.props.page}</button>)
+
+        if (this.props.page !== this.props.maxPage)
+            buttons.push(<button key={"buttonNext"} onClick={"next"}>{">"}</button>) ;
+
+        return buttons;
+    }
+    render() {
+        return (
+            <div class={"PageButtons"}>
+                {this.buttonsList()}
             </div>
         )
     }
