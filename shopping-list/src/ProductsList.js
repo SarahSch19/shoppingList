@@ -42,7 +42,7 @@ const cartItems = [] ;
 
 let filter = "";
 let currentPage = 0;
-let maxPage =  parseInt(items.length / 5 + (items.length % 5 === 0 ? 0 : 1));
+let maxPage = parseInt(items.length / 5 + (items.length % 5 === 0 ? 0 : 1));
 
 function addToCart (itemName) {
     const nb = parseInt(document.getElementById('select-' + itemName).value) ;
@@ -81,10 +81,6 @@ function updateCart () {
 
 
 class FilteredProductsList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {filter: ""};
-    }
 
     filter() {
         filter = document.getElementById('FilterInput').value;
@@ -109,16 +105,29 @@ class FilteredProductsList extends React.Component {
 
 class ProductsList extends FilteredProductsList {
 
+    filterRows() {
+        let rows = [] ;
+        for (let i = 0 ; i < items.length ; ++i) {
+            if (filter === "" || items[i].name.indexOf(filter) !== -1)
+                rows.push(items[i]);
+        }
+        return rows ;
+    }
+
     pushRows() {
         let bg = 'bgLight' ;
         const rows = [] ;
-        const valMax = currentPage === maxPage - 1 ? items.length % 5 : 5 ;
+        const filteredItems = this.filterRows() ;
+
+        maxPage = parseInt(filteredItems.length / 5 + (filteredItems.length % 5 === 0 ? 0 : 1))
+        const valMax = currentPage === maxPage - 1 ? filteredItems.length % 5 : 5 ;
+
         for (let i = 0 ; i < valMax ; ++i) {
                 bg = bg === 'bgDark' ? 'bgLight' : 'bgDark';
                 rows.push(
                     <Product
-                        item={items[i+5*currentPage]}
-                        key={items[i+5*currentPage].name}
+                        item={filteredItems[i+5*currentPage]}
+                        key={filteredItems[i+5*currentPage].name}
                         boxBg={bg}
                     />
                 )
@@ -183,7 +192,6 @@ class PageButtons extends ProductsList {
 
     nextPage() {
         currentPage = currentPage + 1 > maxPage ? maxPage : currentPage + 1;
-        console.log("next " + currentPage);
         ReactDOM.render(
             <ProductsList />,
             document.getElementById('ProductsList')
@@ -194,16 +202,22 @@ class PageButtons extends ProductsList {
         const buttons = [];
 
         if (this.props.page !== 1)
-            buttons.push(<button key={"buttonPrevious"} onClick={() => {
-                this.prevPage()
-            }}>{"<"}</button>) ;
+            buttons.push(
+                <button key={"buttonPrevious"} onClick={() => {
+                    this.prevPage()
+                }}>{"<"}</button>
+            ) ;
 
-        buttons.push(<button key={"buttonCurrent"}>{this.props.page}</button>)
+        buttons.push(
+            <button key={"buttonCurrent"}>{this.props.page}</button>
+        );
 
         if (this.props.page !== this.props.maxPage)
-            buttons.push(<button key={"buttonNext"} onClick={() => {
-                this.nextPage()
-            }}>{">"}</button>) ;
+            buttons.push(
+                <button key={"buttonNext"} onClick={() => {
+                    this.nextPage()
+                }}>{">"}</button>
+            ) ;
 
         return buttons;
     }
