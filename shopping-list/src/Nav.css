@@ -1,0 +1,23 @@
+.nav {
+    background-color: unset;
+    border: none;
+    outline: none;
+    margin: 5px;
+}
+
+.navArrow {
+    width: 5vh;
+    height: 5vh;
+    font-size: 1.5em;
+    font-family: Arial;
+}
+
+.navArrow[disabled] {
+    color: silver;
+}
+
+.navNumber {
+    width: 5vh;
+    height: 5vh;
+    font-size: 1.5em;
+}

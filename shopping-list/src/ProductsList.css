@@ -22,7 +22,6 @@
     margin: 1vh;
     margin-bottom: 3vh;
     padding: 0.1em;
-    #border-bottom: black 1px solid;
     border-radius: 10px;
 
     width: 100%;
@@ -54,7 +53,6 @@
 select {
     border: unset;
     border-radius: 10px;
-    margin: auto;
     margin: 1em;
 }
 

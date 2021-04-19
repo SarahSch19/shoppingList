@@ -202,23 +202,20 @@ class NavButtons extends ProductsList {
     buttonsList() {
         const buttons = [];
 
-        if (this.props.page !== 1)
-            buttons.push(
-                <button key={"buttonPrevious"} onClick={() => {
-                    this.prevPage()
-                }}>{"<"}</button>
-            ) ;
-
         buttons.push(
-            <button key={"buttonCurrent"}>{this.props.page}</button>
+            <button disabled={this.props.page === 1} key={"buttonPrevious"} className={"nav navArrow"} onClick={() => {
+                this.prevPage()
+            }}>{"<"}</button>
+        ) ;
+        buttons.push(
+            <button key={"buttonCurrent"} className={"nav navNumber"}>{this.props.page}</button>
         );
 
-        if (this.props.page !== this.props.maxPage)
-            buttons.push(
-                <button key={"buttonNext"} onClick={() => {
-                    this.nextPage()
-                }}>{">"}</button>
-            ) ;
+        buttons.push(
+            <button disabled={this.props.page === this.props.maxPage} key={"buttonNext"} className={"nav navArrow"} onClick={() => {
+                this.nextPage()
+            }}>{">"}</button>
+        ) ;
 
         return buttons;
     }
