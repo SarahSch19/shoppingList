@@ -16,3 +16,27 @@
     padding: 1em;
     margin-left: 1em;
 }
+
+@media (max-width: 800px) {
+    .FilterBar {
+        width: 95vw;
+    }
+
+    #FilterButton {
+        width: 15%;
+        margin: 0em;
+        min-width: 100px;
+        border-radius: 0px;
+    }
+
+    #FilterInput {
+        width: 60%;
+        margin: 0em;
+    }
+}
+
+@media screen {
+    #FilterButton {
+
+    }
+}

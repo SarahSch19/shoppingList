@@ -14,8 +14,7 @@
     font-family: Poppins, Arial;
     display: inline-block;
     padding: 1em;
-    min-width: 15%;
-    max-width: 27%;
+    width: 20%;
     text-align: center;
 }
 
@@ -23,7 +22,6 @@
     margin: 1vh;
     margin-bottom: 3vh;
     padding: 0.1em;
-    #border-bottom: black 1px solid;
     border-radius: 10px;
 
     width: 100%;
@@ -55,7 +53,6 @@
 select {
     border: unset;
     border-radius: 10px;
-    margin: auto;
     margin: 1em;
 }
 

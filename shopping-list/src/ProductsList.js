@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './general.css';
 import './ProductsList.css';
 import './Cart.css';
 import './FilterBar.css';
-import './general.css';
+import './Nav.css';
 import bag from './bag.svg';
 import refresh from './refresh.svg';
 import cross from './cross.svg';
@@ -41,6 +42,8 @@ const items = [
 const cartItems = [] ;
 
 let filter = "";
+let currentPage = 0;
+let maxPage = parseInt(items.length / 5 + (items.length % 5 === 0 ? 0 : 1));
 
 function addToCart (itemName) {
     const nb = parseInt(document.getElementById('select-' + itemName).value) ;
@@ -79,10 +82,6 @@ function updateCart () {
 
 
 class FilteredProductsList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {filter: ""};
-    }
 
     filter() {
         filter = document.getElementById('FilterInput').value;
@@ -106,19 +105,34 @@ class FilteredProductsList extends React.Component {
 }
 
 class ProductsList extends FilteredProductsList {
+
+    filterRows() {
+        let rows = [] ;
+        for (let i = 0 ; i < items.length ; ++i) {
+            if (filter === "" || items[i].name.indexOf(filter) !== -1)
+                rows.push(items[i]);
+        }
+        return rows ;
+    }
+
     pushRows() {
         let bg = 'bgLight' ;
         const rows = [] ;
-        items.forEach(product => {
-            bg = bg === 'bgDark' ? 'bgLight' : 'bgDark';
-            rows.push(
-                <Product
-                    item={product}
-                    key={product.name}
-                    boxBg={bg}
-                />
-            )
-        });
+        const filteredItems = this.filterRows() ;
+
+        maxPage = parseInt(filteredItems.length / 5 + (filteredItems.length % 5 === 0 ? 0 : 1))
+        const valMax = currentPage === maxPage - 1 ? filteredItems.length % 5 : 5 ;
+
+        for (let i = 0 ; i < valMax ; ++i) {
+                bg = bg === 'bgDark' ? 'bgLight' : 'bgDark';
+                rows.push(
+                    <Product
+                        item={filteredItems[i+5*currentPage]}
+                        key={filteredItems[i+5*currentPage].name}
+                        boxBg={bg}
+                    />
+                )
+        }
         return rows ;
     }
 
@@ -126,6 +140,7 @@ class ProductsList extends FilteredProductsList {
         return (
             <div className="ProductsList">
                 {this.pushRows()}
+                <NavButtons page={currentPage + 1} maxPage={maxPage}/>
             </div>
         )
     }
@@ -163,6 +178,53 @@ class Product extends ProductsList {
             )
         } else
             return ("");
+    }
+}
+
+class NavButtons extends ProductsList {
+
+    prevPage() {
+        currentPage = currentPage - 1 < 0 ? 0 : currentPage - 1;
+        ReactDOM.render(
+            <ProductsList />,
+            document.getElementById('ProductsList')
+        );
+    }
+
+    nextPage() {
+        currentPage = currentPage + 1 > maxPage ? maxPage : currentPage + 1;
+        ReactDOM.render(
+            <ProductsList />,
+            document.getElementById('ProductsList')
+        );
+    }
+
+    buttonsList() {
+        const buttons = [];
+
+        buttons.push(
+            <button disabled={this.props.page === 1} key={"buttonPrevious"} className={"nav navArrow"} onClick={() => {
+                this.prevPage()
+            }}>{"<"}</button>
+        ) ;
+        buttons.push(
+            <button key={"buttonCurrent"} className={"nav navNumber"}>{this.props.page}</button>
+        );
+
+        buttons.push(
+            <button disabled={this.props.page === this.props.maxPage} key={"buttonNext"} className={"nav navArrow"} onClick={() => {
+                this.nextPage()
+            }}>{">"}</button>
+        ) ;
+
+        return buttons;
+    }
+    render() {
+        return (
+            <div className={"NavButtons"}>
+                {this.buttonsList()}
+            </div>
+        )
     }
 }
 
