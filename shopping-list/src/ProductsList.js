@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './ProductsList.css';
 import './Cart.css';
@@ -40,6 +40,8 @@ const items = [
 
 const cartItems = [] ;
 
+let filter = "";
+
 function addToCart (itemName) {
     const nb = parseInt(document.getElementById('select-' + itemName).value) ;
     let found = 0;
@@ -77,12 +79,27 @@ function updateCart () {
 
 
 class FilteredProductsList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {filter: ""};
+    }
+
+    filter() {
+        filter = document.getElementById('FilterInput').value;
+        ReactDOM.render(
+            <ProductsList filter={filter}/>,
+            document.getElementById('ProductsList')
+        );
+    }
+
     render() {
         return (
             <section className="FilteredProductsList">
                 <h2>Articles</h2>
-                <FilterBar />
-                <ProductsList />
+                <FilterBar/>
+                <div id={"ProductsList"}>
+                    <ProductsList />
+                </div>
             </section>
         )
     }
@@ -115,30 +132,38 @@ class ProductsList extends FilteredProductsList {
 }
 
 class Product extends ProductsList {
+    setOptions(itemName) {
+        let options = [];
+        for (let i = 1 ; i <= 25 ; ++i) {
+            options.push(<option key={itemName + i}>{i}</option>)
+        }
+        return options;
+    }
+
     render() {
         const item = this.props.item ;
         let productClass = 'Product ';
         productClass += this.props.boxBg === 0 ? 'bgLight' : 'bgDark' ;
-        let options = [];
-        for (let i = 1 ; i <= 25 ; ++i) {
-            options.push(<option key={item.name + i}>{i}</option>)
-        }
-        return (
-            <div className={productClass}>
-                <div className="Info textLeft">{item.name}</div>
-                <div className="Info textRight">{item.price} €</div>
-                <select className={"Info"} id={"select-" + item.name}>
-                    {options}
-                </select>
-                <div className="Info">
-                    <button className="BtnAdd" onClick={() => {
-                        addToCart(item.name)
-                    }}>
-                        <img src={bag} alt="Ajouter au panier"/>
-                    </button>
+
+        if (filter === "" || item.name.indexOf(filter) !== -1)
+            return (
+                <div className={productClass}>
+                    <div className="Info textLeft">{item.name}</div>
+                    <div className="Info textRight">{item.price} €</div>
+                    <select className={"Info"} id={"select-" + item.name}>
+                        {this.setOptions(item.name)}
+                    </select>
+                    <div className="Info">
+                        <button className="BtnAdd" onClick={() => {
+                            addToCart(item.name)
+                        }}>
+                            <img src={bag} alt="Ajouter au panier"/>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        else
+            return ("");
     }
 }
 
@@ -147,7 +172,9 @@ class FilterBar extends FilteredProductsList {
         return (
             <div className={"FilterBar"}>
                 <input type={"text"} id={"FilterInput"} placeholder={"Nom de l'article"} />
-                <input type={"submit"} id={"FilterButton"} value={"Rechercher"} />
+                <button id={"FilterButton"} onClick={() => {
+                    this.filter();
+                }}>Rechercher</button>
             </div>
         )
     }
